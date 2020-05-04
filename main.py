@@ -6,6 +6,9 @@ from bs4 import BeautifulSoup
 
 app = Flask(__name__)
 
+template = """
+
+"""
 
 def get_fact():
 
@@ -17,9 +20,18 @@ def get_fact():
     return facts[0].getText()
 
 
+def get_pig(fact):
+    payload = {'input_text': fact}
+    response = requests.post('https://hidden-journey-62459.herokuapp.com/piglatinize/', data=payload)
+
+    return response.headers['location']
+
+
 @app.route('/')
 def home():
-    return "FILL ME!"
+    fact = get_fact().strip()
+    pig = get_pig(fact)
+    return Response(response=pig, mimetype="text/html")
 
 
 if __name__ == "__main__":
