@@ -1,17 +1,17 @@
 import os
 
+import logging
+
+
 import requests
 from flask import Flask, send_file, Response
 from bs4 import BeautifulSoup
 
 app = Flask(__name__)
+logging.basicConfig(level=logging.DEBUG)
 
-template = """
-
-"""
 
 def get_fact():
-
     response = requests.get("http://unkno.com")
 
     soup = BeautifulSoup(response.content, "html.parser")
@@ -23,8 +23,7 @@ def get_fact():
 def get_pig(fact):
     payload = {'input_text': fact}
     response = requests.post('https://hidden-journey-62459.herokuapp.com/piglatinize/', data=payload)
-
-    return response.headers['location']
+    return response.url
 
 
 @app.route('/')
